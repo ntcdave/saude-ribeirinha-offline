@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+backend/data/index.json
+backend/.venv/
+*.pyc
+.ollama/

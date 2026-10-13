@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Saude Ribeirinha Offline</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header>
+<h1>Saude Ribeirinha <span class="badge">100% offline</span></h1>
+<p class="sub">Pergunte em portugues. Respondo com base em cartilhas oficiais. Nada sai do seu notebook.</p>
+<p class="aviso">Informacao educativa - nao substitui profissional de saude. Emergencia? SAMU 192.</p>
+</header>
+<main>
+<div id="chat"></div>
+<form id="form">
+<input id="q" placeholder="Ex: o que fazer em caso de queimadura?" autocomplete="off" />
+<button type="submit">Perguntar</button>
+</form>
+<details>
+<summary>Como provar o offline no pitch</summary>
+<ol>
+<li>Rode o backend, abra esta pagina.</li>
+<li>Desligue o Wi-Fi.</li>
+<li>Pergunte de novo - continua funcionando (Gemma 4 local + RAG local).</li>
+</ol>
+</details>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
