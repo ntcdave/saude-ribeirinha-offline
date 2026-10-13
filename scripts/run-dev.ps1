@@ -13,4 +13,14 @@ if (-not (Test-Path ".venv")) { uv venv }
 .\.venv\Scripts\Activate.ps1
 uv pip install -r requirements.txt
 python ..\scripts\build-index.py
-python -m uvicorn app.main:app --reload --port 8000
+# IP da rede local p/ abrir no celular (mesmo Wi-Fi)
+$ip = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.IPAddress -like "192.168.*" } | Select-Object -First 1 -ExpandProperty IPAddress)
+if (-not $ip) { $ip = "localhost" }
+Write-Host ""
+Write-Host "=== Saude Ribeirinha Offline ===" -ForegroundColor Green
+Write-Host "PC:      http://localhost:8000" -ForegroundColor Cyan
+Write-Host "Celular: http://${ip}:8000  (aponte a camera p/ o QR no canto da tela / frontend/qr.png)" -ForegroundColor Yellow
+Write-Host "Se o celular nao abrir, libere o firewall uma vez: Allow inbound TCP 8000" -ForegroundColor DarkYellow
+Write-Host ""
+# 0.0.0.0 = acessivel pelo celular na mesma rede
+python -m uvicorn app.main:app --reload --port 8000 --host 0.0.0.0

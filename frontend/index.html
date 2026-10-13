@@ -1,32 +1,876 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Saude Ribeirinha Offline</title>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Saúde Ribeirinha - Assistente de Saúde Offline</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#2a322f",
+            "error-container": "#ffdad6",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "error": "#ba1a1a",
+            "on-tertiary-fixed": "#002115",
+            "on-surface-variant": "#414845",
+            "surface-tint": "#3c6657",
+            "outline-variant": "#c0c8c3",
+            "on-secondary-container": "#663500",
+            "inverse-on-surface": "#eaf3ee",
+            "on-primary-fixed": "#002117",
+            "on-secondary-fixed-variant": "#6e3900",
+            "primary-fixed-dim": "#a3d0be",
+            "tertiary-fixed": "#b2f0d2",
+            "surface": "#f3fbf6",
+            "secondary-fixed": "#ffdcc3",
+            "surface-bright": "#f3fbf6",
+            "surface-container-high": "#e2eae5",
+            "secondary": "#904d00",
+            "primary-container": "#0e3b2e",
+            "tertiary": "#002418",
+            "inverse-primary": "#a3d0be",
+            "surface-dim": "#d3dcd7",
+            "primary-fixed": "#bfecd9",
+            "secondary-fixed-dim": "#ffb77d",
+            "on-error-container": "#93000a",
+            "on-tertiary": "#ffffff",
+            "surface-container-low": "#edf6f0",
+            "on-primary-container": "#7aa694",
+            "on-surface": "#151d1a",
+            "secondary-container": "#fe932c",
+            "surface-variant": "#dce5df",
+            "on-tertiary-container": "#6da88d",
+            "tertiary-fixed-dim": "#96d3b7",
+            "primary": "#00241a",
+            "surface-container": "#e7f0eb",
+            "on-error": "#ffffff",
+            "on-primary-fixed-variant": "#244e40",
+            "outline": "#717974",
+            "on-tertiary-fixed-variant": "#10503b",
+            "surface-container-highest": "#dce5df",
+            "background": "#f3fbf6",
+            "on-background": "#151d1a",
+            "tertiary-container": "#003c2a",
+            "on-secondary-fixed": "#2f1500"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.25rem",
+            "space-sm": "0.75rem",
+            "margin": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.375rem",
+            "gutter": "1rem",
+            "space-md": "1rem",
+            "gutter-mobile": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-xl": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["22px", { "lineHeight": "30px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "label-sm": ["14px", { "lineHeight": "20px", "fontWeight": "700" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "label-lg": ["18px", { "lineHeight": "24px", "fontWeight": "700" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "fontWeight": "700" }],
+            "label-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "fontWeight": "400" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
 <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-<header>
-<h1>Saude Ribeirinha <span class="badge">100% offline</span></h1>
-<p class="sub">Pergunte em portugues. Respondo com base em cartilhas oficiais. Nada sai do seu notebook.</p>
-<p class="aviso">Informacao educativa - nao substitui profissional de saude. Emergencia? SAMU 192.</p>
-</header>
-<main>
-<div id="chat"></div>
-<form id="form">
-<input id="q" placeholder="Ex: o que fazer em caso de queimadura?" autocomplete="off" />
-<button type="submit">Perguntar</button>
-</form>
-<details>
-<summary>Como provar o offline no pitch</summary>
-<ol>
-<li>Rode o backend, abra esta pagina.</li>
-<li>Desligue o Wi-Fi.</li>
-<li>Pergunte de novo - continua funcionando (Gemma 4 local + RAG local).</li>
+<style>
+  .view{display:none} .view.active{display:block;animation:fade .2s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+  #chat-live .msg-live{background:#fff;border:1.5px solid #c0c8c3;border-radius:16px;padding:12px;font-size:16px;white-space:pre-wrap}
+  #chat-live .msg-live.user{background:#DCFCE7;border-color:#86efac;margin-left:32px}
+  #chat-live small{display:block;color:#15803d;font-weight:700;margin-top:6px}
+  .composer-stitch{position:sticky;bottom:90px}
+</style>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md select-none">
+
+<main class="flex-1 w-full max-w-xl mx-auto pb-32" id="app-main">
+<section id="view-inicio" class="view active"><main class="flex-1 w-full max-w-xl mx-auto pb-28">
+<!-- Hero Section with River Sunset Illustration -->
+<section class="relative w-full bg-primary-container overflow-hidden rounded-b-3xl shadow-md border-b border-outline-variant">
+<!-- Background Image with Gradient Overlay -->
+<div class="relative w-full h-64 sm:h-72">
+<img alt="Rio Amazonas com barco ribeirinho e palafitas ao pôr-do-sol" class="w-full h-full object-cover opacity-85" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVtyvjeXhLrXMlsHoWSqnMhnXQnPwdB0K_gzFodyDQfjCjGPybIsRrcju58vmy847iVIsZw_yCuYdReWZjc_F9W5-SpkgPQrKyjxkGT35zMXFAv7X7wajUgMuLaL_fNLpwy-DjXbJUsay9Nft7-FlKDmiE_JDIVw5jKhxw4hSESBwrEdHGLTu2d5IXscYn0UIuDx4Zapg7wcpRnSO7WHlpDGzZx4xwxzbzcDcs39DgMvbekwk8E-Miy--frm2F5LAGN_wX3fATZmA">
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container via-primary-container/60 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-primary-container/40 via-transparent to-primary-container/40"></div>
+</div>
+<!-- Hero Typography and Welcoming Tone -->
+<div class="relative px-margin-mobile pt-1 pb-7 text-left text-on-primary">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-tertiary-container/80 border border-tertiary-fixed/30 text-tertiary-fixed text-label-sm font-label-sm mb-3 backdrop-blur-sm">
+<span class="material-symbols-outlined text-base material-symbols-fill" data-icon="shield">shield</span>
+          Privacidade Local Ativada
+        </div>
+<h1 class="text-headline-xl-mobile sm:text-headline-xl font-headline-xl-mobile sm:font-headline-xl font-extrabold tracking-tight leading-tight text-white mb-3">
+          Saúde na beira do rio, mesmo sem internet
+        </h1>
+<p class="text-body-lg font-body-lg text-primary-fixed-dim leading-relaxed">
+          Pergunte em português. Respondo com base em cartilhas oficiais. Se não sei, eu digo.
+        </p>
+</div>
+</section>
+<!-- Content Stack -->
+<div class="px-margin-mobile pt-6 space-y-4">
+<!-- 3 Benefit Cards (Tactile Utilitarian Bento Layout) -->
+<div class="grid grid-cols-1 gap-3.5">
+<!-- Card 1: Local AI Gemma 4 -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border-[1.5px] border-outline-variant shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] flex items-start gap-3.5 active:bg-surface-container transition-all">
+<div class="w-14 h-14 min-w-[56px] rounded-2xl bg-primary-container flex items-center justify-center text-on-primary shadow-inner">
+<span class="material-symbols-outlined text-3xl material-symbols-fill" data-icon="memory">memory</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h2 class="text-label-lg font-label-lg text-primary tracking-tight">Gemma 4 local no aparelho</h2>
+<span class="bg-surface-container text-primary text-[11px] font-bold px-2 py-0.5 rounded-full border border-outline-variant">On-Device</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-snug">
+              Funciona em qualquer lugar da floresta, sem gastar pacote de dados.
+            </p>
+</div>
+</article>
+<!-- Card 2: Official Sources Citation -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border-[1.5px] border-outline-variant shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] flex items-start gap-3.5 active:bg-surface-container transition-all">
+<div class="w-14 h-14 min-w-[56px] rounded-2xl bg-secondary-container flex items-center justify-center text-on-primary shadow-inner">
+<span class="material-symbols-outlined text-3xl material-symbols-fill text-white" data-icon="menu_book">menu_book</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h2 class="text-label-lg font-label-lg text-primary tracking-tight">Fontes citadas [Fonte: ...]</h2>
+<span class="bg-surface-container text-secondary text-[11px] font-bold px-2 py-0.5 rounded-full border border-outline-variant">SUS / MS</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-snug">
+              Respostas verificadas direto das cartilhas do Ministério da Saúde.
+            </p>
+</div>
+</article>
+<!-- Card 3: Audio & Plain Talk -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border-[1.5px] border-outline-variant shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] flex items-start gap-3.5 active:bg-surface-container transition-all">
+<div class="w-14 h-14 min-w-[56px] rounded-2xl bg-primary-fixed text-primary flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-3xl material-symbols-fill text-primary-container" data-icon="mic">mic</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h2 class="text-label-lg font-label-lg text-primary tracking-tight">Voz e texto simples</h2>
+<span class="bg-surface-container text-primary text-[11px] font-bold px-2 py-0.5 rounded-full border border-outline-variant">Acessível</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-snug">
+              Fale ou digite como você fala no dia a dia, fácil de entender.
+            </p>
+</div>
+</article>
+</div>
+<!-- Medical Disclaimer / SAMU 192 Notice Card -->
+<section aria-label="Aviso Médico Educativo" class="w-full bg-[#FEF3C7] border-2 border-[#F59E0B] rounded-2xl p-4 shadow-sm">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 min-w-[36px] rounded-full bg-[#F59E0B] text-white flex items-center justify-center mt-0.5">
+<span class="material-symbols-outlined text-2xl material-symbols-fill" data-icon="info">info</span>
+</div>
+<div class="flex-1 text-left">
+<p class="text-label-md font-label-md text-[#78350F] leading-snug font-bold mb-1">
+              Informação educativa — não substitui profissional. Emergência? SAMU 192
+            </p>
+<div class="flex items-center gap-2 mt-2">
+<a class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#DC2626] text-white rounded-xl text-label-sm font-label-sm font-bold shadow-sm active:scale-95 transition-transform" href="#emergencia" title="Emergência SAMU 192 - Saúde Ribeirinha"><span class="material-symbols-outlined text-lg" data-icon="call">call</span>Ligar 192 (SAMU)</a>
+<span class="text-xs text-[#92400E] font-medium">Ligação gratuita mesmo sem crédito</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Primary Action Buttons (High affordance, 56px minimum height, generous touch target) -->
+<div class="pt-2 pb-2 space-y-3"><a class="w-full min-h-[56px] py-4 px-space-md bg-primary-container text-on-primary rounded-2xl flex items-center justify-center gap-3 font-label-lg text-label-lg shadow-md hover:bg-tertiary-container active:scale-[0.98] transition-all border border-tertiary-fixed/20 cursor-pointer" href="#chat" title="Chat Offline - Saúde Ribeirinha"><span class="material-symbols-outlined text-2xl" data-icon="chat">chat</span><span class="">Começar a perguntar</span></a><a class="w-full min-h-[56px] py-3.5 px-space-md bg-surface-container-lowest text-primary-container border-2 border-primary-container rounded-2xl flex items-center justify-center gap-3 font-label-lg text-label-lg shadow-sm hover:bg-surface-container active:scale-[0.98] transition-all cursor-pointer" href="#guias" title="Guias de Primeiros Socorros Offline - Saúde Ribeirinha"><span class="material-symbols-outlined text-2xl" data-icon="menu_book">menu_book</span><span class="">Ver guias de primeiros socorros</span></a></div>
+<!-- Trust Badges & Transparency Strip -->
+<section class="py-3 px-3 bg-surface-container rounded-2xl border border-outline-variant/60 flex flex-wrap items-center justify-center gap-y-2 gap-x-4 text-xs font-semibold text-on-surface-variant text-center">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-base text-primary material-symbols-fill" data-icon="verified">verified</span>
+<span class="">Cartilhas MS</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5 text-error">
+<span class="material-symbols-outlined text-base material-symbols-fill" data-icon="e911_emergency">e911_emergency</span>
+<span class="">SAMU 192</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-base material-symbols-fill" data-icon="offline_bolt">offline_bolt</span>
+<span class="">Offline-first</span>
+</div>
+</section>
+</div>
+</main></section>
+<section id="view-chat" class="view"><main class="w-full max-w-lg mx-auto px-margin-mobile pt-28 space-y-4 flex-1">
+<!-- DATA E TIMESTAMP DIVIDER -->
+<div class="flex justify-center items-center my-2">
+<span class="bg-surface-variant text-on-surface-variant text-label-sm font-label-sm px-3 py-1 rounded-full border border-outline-variant">
+        Atendimento Local • Sem Conexão
+      </span>
+</div>
+<!-- BOT MESSAGE 1: Boas-vindas -->
+<section class="flex items-start gap-2.5">
+<!-- Bot Avatar -->
+<div class="w-10 h-10 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center flex-shrink-0 shadow-sm border border-primary-fixed-dim">
+<span class="material-symbols-outlined text-[24px]" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<!-- Bubble -->
+<div class="flex-1 bg-surface-container-lowest p-4 rounded-2xl rounded-tl-sm border-2 border-surface-variant shadow-sm space-y-3">
+<p class="text-body-lg font-body-lg text-on-surface leading-snug">
+          Olá! Sou o assistente offline de saúde. Como posso ajudar você hoje? Pergunte sobre primeiros socorros ou saúde básica na comunidade.
+        </p>
+<!-- Chips de Sugestão -->
+<div class="pt-1">
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2">Tópicos frequentes:</p>
+<div class="flex flex-wrap gap-2">
+<button class="flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md px-3 py-2 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[44px]" type="button">
+<span class="">🩹 Queimadura</span>
+</button>
+<button class="flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md px-3 py-2 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[44px]" type="button">
+<span class="">🦟 Sintomas de Dengue</span>
+</button>
+<button class="flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md px-3 py-2 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[44px]" type="button">
+<span class="">💧 Água potável &amp; cloro</span>
+</button>
+<button class="flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md px-3 py-2 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[44px]" type="button">
+<span class="">🐍 Picada de cobra</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- USER MESSAGE -->
+<section class="flex flex-col items-end">
+<div class="bg-primary-fixed text-on-primary-fixed-variant p-4 rounded-2xl rounded-tr-sm border border-primary-fixed-dim max-w-[85%] shadow-sm space-y-1">
+<p class="text-body-lg font-body-lg font-medium text-primary leading-snug">
+          O que fazer se alguém queimar a mão na brasa ou no fogão a lenha?
+        </p>
+<div class="flex justify-end items-center gap-1 text-on-primary-fixed-variant text-label-sm font-label-sm">
+<span class="">14:22</span>
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="done_all">done_all</span>
+</div>
+</div>
+</section>
+<!-- BOT DETAILED RESPONSE (Primary Guide Card) -->
+<section class="flex items-start gap-2.5">
+<!-- Bot Avatar -->
+<div class="w-10 h-10 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center flex-shrink-0 shadow-sm border border-primary-fixed-dim">
+<span class="material-symbols-outlined text-[24px]" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<!-- Guided Bubble -->
+<div class="flex-1 bg-surface-container-lowest p-4 rounded-2xl rounded-tl-sm border-2 border-outline-variant shadow-sm space-y-3.5">
+<div class="flex items-center justify-between border-b border-surface-variant pb-2">
+<span class="inline-flex items-center gap-1 text-primary font-headline-sm text-headline-sm font-bold">
+<span class="material-symbols-outlined text-secondary text-[22px]" data-icon="local_fire_department">local_fire_department</span>
+            Primeiros Socorros: Queimadura
+          </span>
+<span class="bg-surface-container text-primary text-label-sm font-label-sm px-2 py-0.5 rounded-md font-bold">Local</span>
+</div>
+<!-- Steps list formatted for high legibility -->
+<ol class="space-y-3">
+<li class="flex items-start gap-2.5">
+<span class="w-6 h-6 rounded-full bg-primary-container text-on-primary font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+<p class="text-body-lg font-body-lg text-on-surface">
+<strong class="text-primary font-bold">Resfrie o local imediatamente</strong> com água corrente limpa e fria por pelo menos 15 minutos.
+            </p>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="w-6 h-6 rounded-full bg-error-container text-on-error-container font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+<p class="text-body-lg font-body-lg text-on-surface">
+<strong class="text-error font-bold">Não passe</strong> pasta de dente, café, manteiga ou gordura na queimadura. Não fure bolhas.
+            </p>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="w-6 h-6 rounded-full bg-primary-container text-on-primary font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+<p class="text-body-lg font-body-lg text-on-surface">
+<strong class="text-primary font-bold">Cubra suavemente</strong> com um pano limpo e úmido, sem apertar a região lesionada.
+            </p>
+</li>
 </ol>
-</details>
+<!-- Official Tag Citation -->
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-primary-fixed flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="menu_book">menu_book</span>
+<span class="text-label-sm font-label-sm text-primary font-bold">
+            [Fonte: Cartilha MS Primeiros Socorros p. 12]
+          </span>
+</div>
+<!-- Inline Action Toolbar -->
+<div class="pt-2 border-t border-surface-variant flex items-center justify-between gap-2">
+<!-- Audio Player Button -->
+<button class="flex-1 flex items-center justify-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md py-2.5 px-3 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[48px]" type="button">
+<span class="material-symbols-outlined text-[22px] text-primary" data-icon="volume_up">volume_up</span>
+<span class="">Ouvir áudio</span>
+</button>
+<!-- Save Guide Button -->
+<a class="flex items-center justify-center gap-1 bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md py-2.5 px-3 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[48px]" href="{{DATA:SCREEN:SCREEN_5}}">
+<span class="material-symbols-outlined text-[20px]" data-icon="bookmark_border">bookmark_border</span>
+<span class="">Salvar guia</span>
+</a>
+<!-- Feedback Thumb -->
+<button aria-label="Resposta útil" class="w-12 h-12 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="thumb_up">thumb_up</span>
+</button>
+</div>
+</div>
+</section>
 </main>
+<div class="px-margin-mobile max-w-lg mx-auto space-y-3">
+<div id="chat-live" class="space-y-3"></div>
+<form id="form" class="composer-stitch flex items-center gap-2 bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-2xl p-2 shadow-md">
+<button type="button" id="micBtn" class="w-14 h-14 min-w-[56px] rounded-2xl bg-surface-container grid place-items-center" title="Voz">🎙</button>
+<input id="q" class="flex-1 min-h-[56px] bg-transparent outline-none text-[17px] px-2" placeholder="Ex: o que fazer em caso de febre?" autocomplete="off" />
+<button type="submit" class="w-14 h-14 min-w-[56px] rounded-2xl bg-primary-container text-white text-2xl">➤</button>
+</form>
+<p class="text-center text-xs text-on-surface-variant pb-2">Informação educativa — não substitui profissional. <a class="underline font-bold" href="tel:192">SAMU 192</a></p>
+</div>
+</section>
+<section id="view-guias" class="view"><main class="pt-28 px-margin-mobile max-w-md mx-auto space-y-4">
+<!-- Screen Title Segment -->
+<div class="pt-2 flex items-baseline justify-between">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold tracking-tight">Guias Offline</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Cartilhas médicas e socorro sem sinal na floresta</p>
+</div>
+<button class="flex items-center gap-1 text-primary-container font-label-sm text-label-sm hover:underline py-1">
+<span class="material-symbols-outlined text-lg" data-icon="sync">sync</span>
+<span class="">Atualizar</span>
+</button>
+</div>
+<!-- ======================================================== -->
+<!-- 2. STATUS DE ARMAZENAMENTO LOCAL ("Baixados no aparelho") -->
+<!-- ======================================================== -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)]">
+<div class="flex items-start justify-between gap-2 mb-2.5">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-2xl" data-icon="storage">storage</span>
+</div>
+<div>
+<span class="font-label-md text-label-md text-primary font-bold block">Baixados no aparelho</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Memória segura para isolamento fluvial</span>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-[11px] font-bold text-center">
+          SUS • MS
+        </span>
+</div>
+<!-- Capacidade e Progresso -->
+<div class="space-y-1.5 mt-2">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-primary-container font-bold">320 MB de 500 MB reservados</span>
+<span class="text-on-surface-variant">64% usado</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-3 overflow-hidden p-0.5 border border-outline-variant">
+<div class="bg-primary-container h-full rounded-full transition-all duration-300 w-[64%]"></div>
+</div>
+</div>
+<!-- Rodapé de Validação Oficial -->
+<div class="mt-3 pt-3 border-t border-surface-variant flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#16A34A] text-lg" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-body-sm text-body-sm text-primary font-bold">6 de 6 guias essenciais salvos</span>
+</div>
+<span class="font-body-sm text-[12px] text-outline font-medium">Versão 2.4</span>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- 3. BARRA DE BUSCA PROEMINENTE COM VOZ                   -->
+<!-- ======================================================== -->
+<section class="space-y-1">
+<label class="block font-label-sm text-label-sm text-primary font-bold pl-1" for="search-guide">
+        Pesquisar sintomas ou socorro imediato
+      </label>
+<div class="relative flex items-center">
+<div class="absolute left-3.5 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="search">search</span>
+</div>
+<input class="w-full h-14 pl-12 pr-14 bg-surface-container-lowest border-2 border-outline-variant focus:border-primary-container focus:ring-0 rounded-2xl font-body-md text-body-md text-on-surface placeholder:text-outline shadow-sm transition-all" id="search-guide" placeholder="Buscar guia offline... (ex: cobra, febre)" type="text">
+<!-- Microfone táctil para acessibilidade em campo -->
+<button aria-label="Buscar por áudio ou comando de voz" class="absolute right-2 w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary-container hover:bg-surface-container-high active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-2xl" data-icon="mic">mic</span>
+</button>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- 4. FILTROS RÁPIDOS / CHIPS COM SCROLL HORIZONTAL        -->
+<!-- ======================================================== -->
+<section class="overflow-x-auto pb-1 -mx-margin-mobile px-margin-mobile no-scrollbar">
+<div class="flex gap-2 min-w-max items-center">
+<!-- Ativo -->
+<button class="px-4 py-2 bg-primary-container text-on-primary rounded-xl font-label-sm text-label-sm flex items-center gap-1.5 shadow-xs border border-primary-container" type="button">
+<span class="material-symbols-outlined text-base" data-icon="done">done</span>
+<span class="">Todos (6)</span>
+</button>
+<button class="px-4 py-2 bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container rounded-xl font-label-sm text-label-sm flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-error" data-icon="warning">warning</span>
+<span class="">Urgência</span>
+</button>
+<button class="px-4 py-2 bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container rounded-xl font-label-sm text-label-sm flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-primary" data-icon="kayaking">kayaking</span>
+<span class="">Doenças Fluviais</span>
+</button>
+<button class="px-4 py-2 bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container rounded-xl font-label-sm text-label-sm flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-primary" data-icon="water_drop">water_drop</span>
+<span class="">Água &amp; Higiene</span>
+</button>
+<button class="px-4 py-2 bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container rounded-xl font-label-sm text-label-sm flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-[#D97706]" data-icon="pest_control">pest_control</span>
+<span class="">Animais Peçonhentos</span>
+</button>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- 5. GRID DE 2 COLUNAS DE GUIAS ILUSTRADOS E TÁTEIS       -->
+<!-- ======================================================== -->
+<section class="grid grid-cols-2 gap-3 pt-1">
+<!-- CARD 1: Queimadura -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3 flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] active:bg-surface-container active:scale-[0.98] transition-all cursor-pointer">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div class="w-12 h-12 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center text-orange-700">
+<span class="material-symbols-outlined text-3xl" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<span class="inline-flex items-center gap-0.5 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[11px] font-label-sm font-bold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+              OFFLINE
+            </span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-tight text-primary font-bold">Queimadura</h3>
+<p class="font-body-sm text-[13px] leading-snug text-on-surface-variant mt-1.5 line-clamp-3">
+            Resfriamento imediato com água limpa corrente. O que <strong class="text-error font-bold">NÃO</strong> passar na pele.
+          </p>
+</div>
+<div class="mt-3 pt-2.5 border-t border-surface-variant flex items-center justify-between font-label-sm text-[12px] text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+            3 min
+          </span>
+<span class="flex items-center text-primary-container font-bold" title="Áudio narrado incluso">
+<span class="material-symbols-outlined text-base" data-icon="volume_up">volume_up</span>
+            2 min
+          </span>
+</div>
+</article>
+<!-- CARD 2: Febre & Dengue -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3 flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] active:bg-surface-container active:scale-[0.98] transition-all cursor-pointer">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="thermostat">thermostat</span>
+</div>
+<span class="inline-flex items-center gap-0.5 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[11px] font-label-sm font-bold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+              OFFLINE
+            </span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-tight text-primary font-bold">Febre &amp; Dengue</h3>
+<p class="font-body-sm text-[13px] leading-snug text-on-surface-variant mt-1.5 line-clamp-3">
+            Hidratação com soro, repouso, sinais de choque e controle térmico seguro em crianças.
+          </p>
+</div>
+<div class="mt-3 pt-2.5 border-t border-surface-variant flex items-center justify-between font-label-sm text-[12px] text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+            4 min
+          </span>
+<span class="material-symbols-outlined text-base text-primary-container" data-icon="volume_up">volume_up</span>
+</div>
+</article>
+<!-- CARD 3: Picada de Cobra (Urgência Destaque) -->
+<article class="bg-surface-container-lowest border-2 border-secondary-container rounded-2xl p-3 flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] active:bg-surface-container active:scale-[0.98] transition-all cursor-pointer relative overflow-hidden">
+<div class="absolute -right-6 -top-6 w-16 h-16 bg-amber-100 rounded-full opacity-50 pointer-events-none"></div>
+<div>
+<div class="flex justify-between items-start mb-2">
+<div class="w-12 h-12 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl font-bold" data-icon="warning">warning</span>
+</div>
+<span class="inline-flex items-center gap-0.5 bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full text-[11px] font-label-sm font-bold">
+              URGENTE
+            </span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-tight text-primary font-bold">Picada de Cobra</h3>
+<p class="font-body-sm text-[13px] leading-snug text-on-surface-variant mt-1.5 line-clamp-3">
+            Membro imóvel e elevado. Beba água limpa. <strong class="text-error font-bold">NÃO</strong> amarre e nem corte.
+          </p>
+</div>
+<div class="mt-3 pt-2.5 border-t border-surface-variant flex items-center justify-between font-label-sm text-[12px] text-secondary font-bold">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="alarm">alarm</span>
+            2 min leitura
+          </span>
+<span class="material-symbols-outlined text-base" data-icon="volume_up">volume_up</span>
+</div>
+</article>
+<!-- CARD 4: Água Potável -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3 flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] active:bg-surface-container active:scale-[0.98] transition-all cursor-pointer">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-3xl" data-icon="water_drop" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<span class="inline-flex items-center gap-0.5 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[11px] font-label-sm font-bold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+              OFFLINE
+            </span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-tight text-primary font-bold">Água Potável</h3>
+<p class="font-body-sm text-[13px] leading-snug text-on-surface-variant mt-1.5 line-clamp-3">
+            Gotas de hipoclorito de sódio por balde e fervura correta de águas do igarapé.
+          </p>
+</div>
+<div class="mt-3 pt-2.5 border-t border-surface-variant flex items-center justify-between font-label-sm text-[12px] text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+            3 min
+          </span>
+<span class="material-symbols-outlined text-base text-primary-container" data-icon="volume_up">volume_up</span>
+</div>
+</article>
+<!-- CARD 5: Diarreia & Desidratação -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3 flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] active:bg-surface-container active:scale-[0.98] transition-all cursor-pointer">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-800">
+<span class="material-symbols-outlined text-3xl" data-icon="medication_liquid">medication_liquid</span>
+</div>
+<span class="inline-flex items-center gap-0.5 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[11px] font-label-sm font-bold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+              OFFLINE
+            </span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-tight text-primary font-bold">Diarreia &amp; Soro</h3>
+<p class="font-body-sm text-[13px] leading-snug text-on-surface-variant mt-1.5 line-clamp-3">
+            Receita do soro caseiro: medidas de sal e açúcar na colher comum ribeirinha.
+          </p>
+</div>
+<div class="mt-3 pt-2.5 border-t border-surface-variant flex items-center justify-between font-label-sm text-[12px] text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+            3 min
+          </span>
+<span class="material-symbols-outlined text-base text-primary-container" data-icon="volume_up">volume_up</span>
+</div>
+</article>
+<!-- CARD 6: Cortes & Ferimentos -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3 flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(14,59,46,0.08)] active:bg-surface-container active:scale-[0.98] transition-all cursor-pointer">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div class="w-12 h-12 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-800">
+<span class="material-symbols-outlined text-3xl" data-icon="healing">healing</span>
+</div>
+<span class="inline-flex items-center gap-0.5 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[11px] font-label-sm font-bold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+              OFFLINE
+            </span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-tight text-primary font-bold">Cortes &amp; Pele</h3>
+<p class="font-body-sm text-[13px] leading-snug text-on-surface-variant mt-1.5 line-clamp-3">
+            Lavagem com sabão neutro e água tratada. Como estancar sangramento com pano limpo.
+          </p>
+</div>
+<div class="mt-3 pt-2.5 border-t border-surface-variant flex items-center justify-between font-label-sm text-[12px] text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+            3 min
+          </span>
+<span class="material-symbols-outlined text-base text-primary-container" data-icon="volume_up">volume_up</span>
+</div>
+</article>
+</section>
+<!-- ======================================================== -->
+<!-- 6. FAIXA DE EMERGÊNCIA RÁPIDA NO RODAPÉ                 -->
+<!-- ======================================================== -->
+<a class="block mt-4 mb-2 bg-error-container border border-error/30 hover:border-error rounded-2xl p-3.5 flex items-center gap-3 active:scale-[0.98] transition-all cursor-pointer" href="{{DATA:SCREEN:SCREEN_2}}">
+<div class="w-11 h-11 rounded-xl bg-error text-on-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="phone_in_talk">phone_in_talk</span>
+</div>
+<div class="flex-1">
+<span class="font-label-md text-label-md text-on-error-container font-bold block leading-tight">Emergência grave no rio?</span>
+<p class="font-body-sm text-body-sm text-on-error-container mt-0.5 leading-snug">
+          Acione o rádio comunitário ou disque <strong class="font-bold underline">SAMU 192</strong> (ligação gratuita).
+        </p>
+</div>
+<span class="material-symbols-outlined text-error text-2xl shrink-0" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</main></section>
+<section id="view-emergencia" class="view"><main class="px-margin-mobile pt-4 space-y-4 max-w-lg mx-auto">
+<!-- Primary Emergency Alert Box (SAMU 192) -->
+<section aria-label="Alerta de Emergência" class="bg-error-container border-2 border-error rounded-xl p-space-md shadow-md text-on-error-container relative overflow-hidden">
+<div class="flex items-center gap-2 mb-1.5">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-error text-on-error">
+<span class="material-symbols-outlined material-symbols-fill text-xl" data-icon="emergency">emergency</span>
+</span>
+<span class="font-label-sm text-label-sm tracking-wide text-error uppercase">Chamada Prioritária Fluvial</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-error-container tracking-tight leading-tight">
+        EMERGÊNCIA? Ligue 192 (SAMU)
+      </h1>
+<p class="font-body-md text-body-md text-on-surface mt-1 mb-4 leading-snug">
+        Ligação de emergência gratuita válida mesmo sem créditos ou sinal 4G comum. O socorro é acionado via satélite/rádio pela central de regulação.
+      </p>
+<!-- Huge Tactical Call Button (Min-height 72px) -->
+<a aria-label="Ligar 192 Agora para o SAMU" class="w-full min-h-[72px] bg-error hover:bg-on-error-container active:scale-[0.98] transition-all duration-150 rounded-xl px-4 py-3 flex items-center justify-between shadow-lg text-on-error group cursor-pointer" href="tel:192" role="button">
+<div class="flex items-center gap-3">
+<div class="w-14 h-14 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined material-symbols-fill text-3xl group-hover:scale-110 transition-transform" data-icon="phone_in_talk">phone_in_talk</span>
+</div>
+<div class="text-left">
+<span class="block font-headline-md text-headline-md font-bold tracking-normal leading-tight">LIGAR 192 AGORA</span>
+<span class="block font-label-sm text-label-sm text-white/90">Toque para discar imediatamente</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-3xl shrink-0" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</section>
+<!-- Quick Action: Offline First Aid Guides -->
+<section>
+<a class="w-full min-h-[56px] bg-surface-container-lowest border-2 border-outline-variant hover:border-primary-container active:bg-surface-container rounded-xl px-4 py-3 flex items-center justify-between shadow-sm transition-all text-primary" href="{{DATA:SCREEN:SCREEN_5}}">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="menu_book">menu_book</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md leading-tight text-on-surface">Acessar Guias de Primeiros Socorros Offline</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Protocolos ilustrados salvos no dispositivo</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="chevron_right">chevron_right</span>
+</a>
+</section>
+<!-- Section: O Que Fazer Enquanto Aguarda Socorro (Bento Cards) -->
+<section aria-labelledby="heading-instrucoes" class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-primary tracking-tight" id="heading-instrucoes">
+          O QUE FAZER ENQUANTO AGUARDA SOCORRO
+        </h2>
+</div>
+<!-- Step 1 Card -->
+<article class="bg-surface-container-lowest border-2 border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex items-start gap-3">
+<div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0 mt-0.5">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="shield">shield</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-lg text-label-lg text-on-surface leading-snug">
+              1. Mantenha a calma e afaste o perigo
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 leading-relaxed">
+              Não entre em pânico. Isole a área de animais peçonhentos (cobras, arraias), fogo ou águas profundas. Posicione a vítima em piso plano, seco e ventilado, preferencialmente à sombra.
+            </p>
+<div class="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+              Priorize a segurança de quem está ajudando
+            </div>
+</div>
+</div>
+</article>
+<!-- Step 2 Card -->
+<article class="bg-surface-container-lowest border-2 border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex items-start gap-3">
+<div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0 mt-0.5">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="explore">explore</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-lg text-label-lg text-on-surface leading-snug">
+              2. Identifique sua localização no rio
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 leading-relaxed">
+              Ao falar no 192 ou rádio, seja específico: informe o <strong>nome do igarapé</strong>, <strong>comunidade</strong>, <strong>margem (direita ou esquerda do rio principal)</strong> e referências visuais (ex: próximo à boca do furo ou árvore sumaúma caída).
+            </p>
+<div class="mt-2.5 p-2 rounded bg-surface-container-low border border-outline-variant text-on-surface">
+<p class="font-label-sm text-label-sm">Coordenada de Referência Offline Local:</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-mono">Setor Médio Solimões • Margem Direita</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Step 3 Card -->
+<article class="bg-surface-container-lowest border-2 border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex items-start gap-3">
+<div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0 mt-0.5">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="vital_signs">vital_signs</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-lg text-label-lg text-on-surface leading-snug">
+              3. Avalie e relate os sinais vitais
+            </h3>
+<ul class="font-body-md text-body-md text-on-surface-variant mt-1 space-y-1 list-disc list-inside leading-relaxed">
+<li class=""><strong>Consciência:</strong> A pessoa responde ao ser chamada?</li>
+<li class=""><strong>Respiração:</strong> O peito se move regularmente?</li>
+<li class=""><strong>Circulação:</strong> Pele fria, suor excessivo ou sangramento ativo visível?</li>
+</ul>
+<div class="mt-2 text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary" data-icon="info">info</span>
+              Nunca dê água ou alimentos para quem estiver inconsciente.
+            </div>
+</div>
+</div>
+</article>
+</section>
+<!-- Section: Rede de Apoio Local & Comunidade -->
+<section aria-labelledby="heading-rede" class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-primary tracking-tight" id="heading-rede">
+          Rede de Apoio Local &amp; Comunidade
+        </h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">Proximidade Fluvial</span>
+</div>
+<div class="space-y-2.5">
+<!-- UBS Fluvial -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="directions_boat">directions_boat</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">UBS Fluvial Dr. Abaré</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rádio VHF: Canal 16 • Ancorada a 25 min de voadeira</p>
+</div>
+</div>
+<button aria-label="Acionar Rádio UBS" class="min-h-[44px] min-w-[44px] px-3 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary font-label-sm text-label-sm flex items-center justify-center gap-1 active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="podcasts">podcasts</span>
+            Rádio
+          </button>
+</div>
+<!-- Agente Comunitário de Saúde (ACS) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-primary-fixed text-on-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="medical_services">medical_services</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Agente de Saúde (ACS)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Posto Comunitário • Kit de primeiros socorros &amp; Oximetria</p>
+</div>
+</div>
+<button aria-label="Avisar ACS" class="min-h-[44px] min-w-[44px] px-3 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary font-label-sm text-label-sm flex items-center justify-center gap-1 active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="notification_important">notification_important</span>
+            Avisar
+          </button>
+</div>
+<!-- Parteira Tradicional -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="pregnant_woman">pregnant_woman</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Parteira Tradicional da Vila</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dona Raimunda • Apoio a partos iminentes &amp; cuidados</p>
+</div>
+</div>
+<button aria-label="Chamar Parteira" class="min-h-[44px] min-w-[44px] px-3 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary font-label-sm text-label-sm flex items-center justify-center gap-1 active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="home_health">home_health</span>
+            Chamar
+          </button>
+</div>
+<!-- Ponto de Rádio Comunitário -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-surface-container-high text-on-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="radio">radio</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Rádio Comunitário do Vilarejo</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Frequência SSB 4.545 kHz • Alerta para embarcações</p>
+</div>
+</div>
+<button aria-label="Sinalizar Rádio" class="min-h-[44px] min-w-[44px] px-3 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary font-label-sm text-label-sm flex items-center justify-center gap-1 active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="cell_tower">cell_tower</span>
+            Alerta
+          </button>
+</div>
+</div>
+</section>
+<!-- Legal and Operational Disclaimer Card -->
+<aside class="bg-surface-container border border-outline-variant rounded-xl p-space-md text-on-surface">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-2xl shrink-0 mt-0.5" data-icon="policy">policy</span>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Aviso importante de segurança</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
+            Este aplicativo é um suporte educativo offline e <strong>não substitui o atendimento médico presencial</strong> ou o resgate fluvial especializado. Em situações graves, mobilize o apoio de barqueiros e moradores vizinhos enquanto o socorro oficial se desloca.
+          </p>
+</div>
+</div>
+</aside>
+</main></section>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 h-[68px] bg-surface-container-lowest shadow-[0_-2px_8px_rgba(14,59,46,0.08)] border-t border-outline-variant">
+<a data-go="inicio" href="#inicio" class="tabbtn flex flex-col items-center justify-center min-h-[56px] min-w-[64px] rounded-xl px-3 py-1 bg-primary-container text-white"><span class="material-symbols-outlined text-2xl">home</span><span class="text-[12px] font-bold">Início</span></a>
+<a data-go="chat" href="#chat" class="tabbtn flex flex-col items-center justify-center min-h-[56px] min-w-[64px] rounded-xl px-3 py-1 text-on-surface-variant"><span class="material-symbols-outlined text-2xl">chat</span><span class="text-[12px] font-bold">Chat</span></a>
+<a data-go="guias" href="#guias" class="tabbtn flex flex-col items-center justify-center min-h-[56px] min-w-[64px] rounded-xl px-3 py-1 text-on-surface-variant"><span class="material-symbols-outlined text-2xl">menu_book</span><span class="text-[12px] font-bold">Guias</span></a>
+<a data-go="emergencia" href="#emergencia" class="tabbtn flex flex-col items-center justify-center min-h-[56px] min-w-[64px] rounded-xl px-3 py-1 text-[#991B1B]"><span class="material-symbols-outlined text-2xl">emergency</span><span class="text-[12px] font-bold">Emergência</span></a>
+</nav>
 <script src="app.js"></script>
+
+<button id="qr-fab" style="position:fixed;right:14px;bottom:92px;z-index:60;width:56px;height:56px;border-radius:16px;background:#0E3B2E;color:#fff;font-size:26px;border:0;box-shadow:0 4px 14px rgba(0,0,0,.3)" title="Ver no celular (QR)">📱</button>
+<div id="qr-modal" style="display:none;position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.6);place-items:center;padding:20px">
+  <div style="background:#fff;border-radius:20px;padding:22px;max-width:340px;text-align:center">
+    <h3 style="margin:0 0 6px;color:#0E3B2E">Abrir no celular 📱</h3>
+    <p style="margin:0 0 12px;color:#555;font-size:14px">Mesmo Wi-Fi que o notebook, aponte a câmera:</p>
+    <img src="qr.png" alt="QR para abrir no celular" style="width:220px;height:220px;margin:0 auto;border:1px solid #CFE0D8;border-radius:12px" />
+    <p style="font-weight:800;color:#0E3B2E;margin:12px 0 2px"><code>http://192.168.1.10:8000/#chat</code></p>
+    <small style="color:#777">Backend precisa rodar com --host 0.0.0.0 (run-dev já faz)</small><br/><br/>
+    <button id="qr-close" style="min-height:48px;padding:10px 20px;border-radius:12px;border:0;background:#0E3B2E;color:#fff;font-weight:800">Fechar</button>
+  </div>
+</div>
+<script>
+(function(){var f=document.getElementById('qr-fab'),m=document.getElementById('qr-modal'),c=document.getElementById('qr-close');
+if(f&&m){f.onclick=function(){m.style.display='grid'};c.onclick=function(){m.style.display='none'};m.onclick=function(e){if(e.target===m)m.style.display='none'};}})();
+</script>
 </body>
 </html>
