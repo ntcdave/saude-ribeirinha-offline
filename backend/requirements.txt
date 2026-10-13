@@ -4,3 +4,4 @@ numpy>=1.26
 requests>=2.31
 python-multipart>=0.0.9
 pypdf>=4
+fontTools>=4.0  # evita warning CFF Type1 no ingest (MinionPro/Comfortaa) e melhora extracao de texto
