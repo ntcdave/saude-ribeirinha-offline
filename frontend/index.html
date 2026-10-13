@@ -293,80 +293,6 @@
 </div>
 </div>
 </section>
-<!-- USER MESSAGE -->
-<section class="flex flex-col items-end">
-<div class="bg-primary-fixed text-on-primary-fixed-variant p-4 rounded-2xl rounded-tr-sm border border-primary-fixed-dim max-w-[85%] shadow-sm space-y-1">
-<p class="text-body-lg font-body-lg font-medium text-primary leading-snug">
-          O que fazer se alguém queimar a mão na brasa ou no fogão a lenha?
-        </p>
-<div class="flex justify-end items-center gap-1 text-on-primary-fixed-variant text-label-sm font-label-sm">
-<span class="">14:22</span>
-<span class="material-symbols-outlined text-[16px] text-primary" data-icon="done_all">done_all</span>
-</div>
-</div>
-</section>
-<!-- BOT DETAILED RESPONSE (Primary Guide Card) -->
-<section class="flex items-start gap-2.5">
-<!-- Bot Avatar -->
-<div class="w-10 h-10 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center flex-shrink-0 shadow-sm border border-primary-fixed-dim">
-<span class="material-symbols-outlined text-[24px]" data-icon="health_and_safety">health_and_safety</span>
-</div>
-<!-- Guided Bubble -->
-<div class="flex-1 bg-surface-container-lowest p-4 rounded-2xl rounded-tl-sm border-2 border-outline-variant shadow-sm space-y-3.5">
-<div class="flex items-center justify-between border-b border-surface-variant pb-2">
-<span class="inline-flex items-center gap-1 text-primary font-headline-sm text-headline-sm font-bold">
-<span class="material-symbols-outlined text-secondary text-[22px]" data-icon="local_fire_department">local_fire_department</span>
-            Primeiros Socorros: Queimadura
-          </span>
-<span class="bg-surface-container text-primary text-label-sm font-label-sm px-2 py-0.5 rounded-md font-bold">Local</span>
-</div>
-<!-- Steps list formatted for high legibility -->
-<ol class="space-y-3">
-<li class="flex items-start gap-2.5">
-<span class="w-6 h-6 rounded-full bg-primary-container text-on-primary font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
-<p class="text-body-lg font-body-lg text-on-surface">
-<strong class="text-primary font-bold">Resfrie o local imediatamente</strong> com água corrente limpa e fria por pelo menos 15 minutos.
-            </p>
-</li>
-<li class="flex items-start gap-2.5">
-<span class="w-6 h-6 rounded-full bg-error-container text-on-error-container font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
-<p class="text-body-lg font-body-lg text-on-surface">
-<strong class="text-error font-bold">Não passe</strong> pasta de dente, café, manteiga ou gordura na queimadura. Não fure bolhas.
-            </p>
-</li>
-<li class="flex items-start gap-2.5">
-<span class="w-6 h-6 rounded-full bg-primary-container text-on-primary font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
-<p class="text-body-lg font-body-lg text-on-surface">
-<strong class="text-primary font-bold">Cubra suavemente</strong> com um pano limpo e úmido, sem apertar a região lesionada.
-            </p>
-</li>
-</ol>
-<!-- Official Tag Citation -->
-<div class="bg-surface-container-low p-2.5 rounded-xl border border-primary-fixed flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-[20px]" data-icon="menu_book">menu_book</span>
-<span class="text-label-sm font-label-sm text-primary font-bold">
-            [Fonte: Cartilha MS Primeiros Socorros p. 12]
-          </span>
-</div>
-<!-- Inline Action Toolbar -->
-<div class="pt-2 border-t border-surface-variant flex items-center justify-between gap-2">
-<!-- Audio Player Button -->
-<button class="flex-1 flex items-center justify-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md py-2.5 px-3 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[48px]" type="button">
-<span class="material-symbols-outlined text-[22px] text-primary" data-icon="volume_up">volume_up</span>
-<span class="">Ouvir áudio</span>
-</button>
-<!-- Save Guide Button -->
-<a class="flex items-center justify-center gap-1 bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md py-2.5 px-3 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[48px]" href="{{DATA:SCREEN:SCREEN_5}}">
-<span class="material-symbols-outlined text-[20px]" data-icon="bookmark_border">bookmark_border</span>
-<span class="">Salvar guia</span>
-</a>
-<!-- Feedback Thumb -->
-<button aria-label="Resposta útil" class="w-12 h-12 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[22px]" data-icon="thumb_up">thumb_up</span>
-</button>
-</div>
-</div>
-</section>
 </main>
 <div class="px-margin-mobile max-w-lg mx-auto space-y-3">
 <div id="chat-live" class="space-y-3"></div>
@@ -856,7 +782,7 @@
 <a data-go="guias" href="#guias" class="tabbtn flex flex-col items-center justify-center min-h-[56px] min-w-[64px] rounded-xl px-3 py-1 text-on-surface-variant"><span class="material-symbols-outlined text-2xl">menu_book</span><span class="text-[12px] font-bold">Guias</span></a>
 <a data-go="emergencia" href="#emergencia" class="tabbtn flex flex-col items-center justify-center min-h-[56px] min-w-[64px] rounded-xl px-3 py-1 text-[#991B1B]"><span class="material-symbols-outlined text-2xl">emergency</span><span class="text-[12px] font-bold">Emergência</span></a>
 </nav>
-<script src="app.js"></script>
+<script src="app.js?v=gemma4"></script>
 
 <button id="qr-fab" style="position:fixed;right:14px;bottom:92px;z-index:60;width:56px;height:56px;border-radius:16px;background:#0E3B2E;color:#fff;font-size:26px;border:0;box-shadow:0 4px 14px rgba(0,0,0,.3)" title="Ver no celular (QR)">📱</button>
 <div id="qr-modal" style="display:none;position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.6);place-items:center;padding:20px">

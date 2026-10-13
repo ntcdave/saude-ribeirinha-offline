@@ -17,7 +17,6 @@ INDEX_PATH = DATA_DIR / "index.json"
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "gemma4:e4b")
-CHAT_MODEL_FALLBACK = os.getenv("CHAT_MODEL_FALLBACK", "gemma4:e2b")
 EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-embed-text")
 
 TOP_K = int(os.getenv("TOP_K", "3"))

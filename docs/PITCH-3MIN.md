@@ -10,7 +10,7 @@
 4. Mostre `/api/health` com `gemma4:e4b`.
 
 ## 1:30-2:30 Como funciona (tecnico rapido)
-"Gemma 4 e4b via Ollama, embeddings nomic-embed-text locais, busca vetorial + fallback, prompt que OBRIGA citacao e diz 'nao sei' se nao esta nos docs. Tudo open source, licenca MIT."
+"Gemma 4 e4b via Ollama, embeddings nomic-embed-text locais, busca hibrida vetorial + lexica, prompt que OBRIGA citacao e diz 'nao sei' se nao esta nos docs. Tudo open source, licenca MIT."
 
 ## 2:30-3:00 Impacto + pedido
 "Agente de saude leva no notebook pra comunidade sem internet. Proximo: voz (Gemma 4 ja tem audio) + mais cartilhas. Queremos ser o Best Open-Source AI Project porque funciona onde a nuvem nao chega."

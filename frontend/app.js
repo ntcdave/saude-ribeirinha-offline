@@ -105,34 +105,141 @@ function mountVoiceBar(){
 }
 mountVoiceBar();
 
-function bubble(text, cls, fontes){
+function bubble(text, cls){
+  // Bolha simples: SOMENTE msg do usuário ou status transitório. Resposta do modelo SEMPRE usa renderGuideCard.
   const d=document.createElement("div");
   d.className="msg-live "+(cls||"");
   d.textContent=text;
-  if(fontes&&fontes.length){
-    const s=document.createElement("small");
-    s.textContent="Fontes: "+fontes.map(f=>f.source).join(", ");
-    d.appendChild(s);
-    const row=document.createElement("div");
-    row.style.cssText="display:flex;gap:8px;margin-top:8px";
-    const b1=document.createElement("button");
-    b1.textContent="🔊 Ouvir";
-    b1.style.cssText="border:1px solid #c0c8c3;border-radius:10px;min-height:44px;padding:8px 12px;font-weight:700;background:#F2F7F4";
-    b1.onclick=()=>speak(text, b1);
-    const b2=document.createElement("button");
-    b2.textContent="🔖 Salvar";
-    b2.style.cssText=b1.style.cssText;
-    b2.onclick=()=>{
-      const arr=JSON.parse(localStorage.getItem("guias_salvos")||"[]");
-      arr.push({text:text.slice(0,300),em:new Date().toISOString()});
-      localStorage.setItem("guias_salvos",JSON.stringify(arr));
-      b2.textContent="✔ Salvo";
-    };
-    row.appendChild(b1);row.appendChild(b2);d.appendChild(row);
-  }
   live.appendChild(d);
   d.scrollIntoView({behavior:"smooth",block:"end"});
   return d;
+}
+
+// ---- Cartão padrão de resposta (único formato em todo o app, 1:1 com o print) ----
+function cardSpeechText(card){
+  const parts=[card.titulo+". "].concat((card.passos||[]).map(p=>((p.destaque||"")+". "+(p.texto||"")).trim()));
+  return cleanForSpeech(parts.join(" "));
+}
+function saveGuide(card, btn){
+  try{
+    const arr=JSON.parse(localStorage.getItem("guias_salvos")||"[]");
+    arr.push({titulo:card.titulo, passos:card.passos, fonte:card.fonte, em:new Date().toISOString()});
+    localStorage.setItem("guias_salvos",JSON.stringify(arr));
+    if(btn) btn.querySelector("span:last-child").textContent=" Salvo ✓";
+  }catch(e){}
+}
+function renderGuideCard(card, modo){
+  card = card || {};
+  const titulo = String(card.titulo||"Orientações de Saúde");
+  const icone = String(card.icone||"health_and_safety");
+  const passos = Array.isArray(card.passos) && card.passos.length ? card.passos.slice(0,3) : [
+    {destaque:"Procure ajuda presencial", texto:"Se piorar, vá à UBS ou ligue SAMU 192.", alerta:false}
+  ];
+  const fonte = String(card.fonte||"documentos locais");
+
+  const sec=document.createElement("section");
+  sec.className="flex items-start gap-2.5";
+
+  const av=document.createElement("div");
+  av.className="w-10 h-10 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center flex-shrink-0 shadow-sm border border-primary-fixed-dim";
+  const avI=document.createElement("span");
+  avI.className="material-symbols-outlined text-[24px]";
+  avI.textContent="health_and_safety";
+  av.appendChild(avI);
+
+  const box=document.createElement("div");
+  box.className="flex-1 bg-surface-container-lowest p-4 rounded-2xl rounded-tl-sm border-2 border-outline-variant shadow-sm space-y-3.5";
+
+  const head=document.createElement("div");
+  head.className="flex items-center justify-between border-b border-surface-variant pb-2";
+  const title=document.createElement("span");
+  title.className="inline-flex items-center gap-1 text-primary font-headline-sm text-headline-sm font-bold";
+  const tI=document.createElement("span");
+  tI.className="material-symbols-outlined text-secondary text-[22px]";
+  tI.textContent=icone;
+  title.appendChild(tI);
+  title.appendChild(document.createTextNode(" "+titulo));
+  const badge=document.createElement("span");
+  badge.className="bg-surface-container text-primary text-label-sm font-label-sm px-2 py-0.5 rounded-md font-bold";
+  badge.textContent="Local";
+  head.appendChild(title); head.appendChild(badge);
+
+  const ol=document.createElement("ol");
+  ol.className="space-y-3";
+  passos.forEach((p,i)=>{
+    const alerta=!!p.alerta || /^\s*n[ãa]o\b/i.test(String(p.destaque||""));
+    const li=document.createElement("li");
+    li.className="flex items-start gap-2.5";
+    const n=document.createElement("span");
+    n.className= alerta
+      ? "w-6 h-6 rounded-full bg-error-container text-on-error-container font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5"
+      : "w-6 h-6 rounded-full bg-primary-container text-on-primary font-bold text-label-sm font-label-sm flex items-center justify-center flex-shrink-0 mt-0.5";
+    n.textContent=String(i+1);
+    const par=document.createElement("p");
+    par.className="text-body-lg font-body-lg text-on-surface";
+    const strong=document.createElement("strong");
+    strong.className= alerta ? "text-error font-bold" : "text-primary font-bold";
+    strong.textContent=String(p.destaque||"").trim();
+    par.appendChild(strong);
+    const resto=String(p.texto||"").trim();
+    if(resto) par.appendChild(document.createTextNode(" "+resto));
+    li.appendChild(n); li.appendChild(par); ol.appendChild(li);
+  });
+
+  const src=document.createElement("div");
+  src.className="bg-surface-container-low p-2.5 rounded-xl border border-primary-fixed flex items-center gap-2";
+  const srcI=document.createElement("span");
+  srcI.className="material-symbols-outlined text-primary text-[20px]";
+  srcI.textContent="menu_book";
+  const srcT=document.createElement("span");
+  srcT.className="text-label-sm font-label-sm text-primary font-bold";
+  srcT.textContent="[Fonte: "+fonte+"]";
+  src.appendChild(srcI); src.appendChild(srcT);
+
+  const bar=document.createElement("div");
+  bar.className="pt-2 border-t border-surface-variant flex items-center justify-between gap-2";
+  const bHear=document.createElement("button");
+  bHear.type="button";
+  bHear.className="flex-1 flex items-center justify-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md py-2.5 px-3 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[48px]";
+  const bHearI=document.createElement("span");
+  bHearI.className="material-symbols-outlined text-[22px] text-primary";
+  bHearI.textContent="volume_up";
+  const bHearT=document.createElement("span");
+  bHearT.textContent="Ouvir áudio";
+  bHear.appendChild(bHearI); bHear.appendChild(bHearT);
+  bHear.onclick=()=>speak(cardSpeechText(card), bHearT);
+  const bSave=document.createElement("a");
+  bSave.className="flex items-center justify-center gap-1 bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md py-2.5 px-3 rounded-xl border border-outline-variant active:scale-95 transition-all min-h-[48px]";
+  bSave.href="#guias";
+  const bSaveI=document.createElement("span");
+  bSaveI.className="material-symbols-outlined text-[20px]";
+  bSaveI.textContent="bookmark_border";
+  const bSaveT=document.createElement("span");
+  bSaveT.textContent="Salvar guia";
+  bSave.appendChild(bSaveI); bSave.appendChild(bSaveT);
+  bSave.addEventListener("click",e=>{e.preventDefault();saveGuide(card,bSave);go("guias");});
+  const bLike=document.createElement("button");
+  bLike.type="button";
+  bLike.setAttribute("aria-label","Resposta útil");
+  bLike.className="w-12 h-12 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant active:scale-95 transition-all";
+  const bLikeI=document.createElement("span");
+  bLikeI.className="material-symbols-outlined text-[22px]";
+  bLikeI.textContent="thumb_up";
+  bLike.appendChild(bLikeI);
+  bLike.onclick=()=>{bLikeI.textContent="thumb_up";bLike.classList.add("bg-primary-fixed");};
+  bar.appendChild(bHear); bar.appendChild(bSave); bar.appendChild(bLike);
+
+  box.appendChild(head); box.appendChild(ol); box.appendChild(src); box.appendChild(bar);
+  if(modo){
+    const m=document.createElement("div");
+    m.style.cssText="text-align:center;font-size:11px;color:#717974";
+    m.textContent="(modo: "+modo+") • Informação educativa — não substitui profissional. SAMU 192";
+    box.appendChild(m);
+  }
+  sec.appendChild(av); sec.appendChild(box);
+  live.appendChild(sec);
+  sec.scrollIntoView({behavior:"smooth",block:"end"});
+  return sec;
 }
 
 async function perguntar(p){
@@ -140,12 +247,15 @@ async function perguntar(p){
   const l=bubble("Buscando nas cartilhas locais...","");
   try{
     const r=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({pergunta:p})});
-    const data=await r.json();
+    const data=await r.json().catch(()=>null);
     l.remove();
-    bubble(data.resposta+"\n(modo: "+data.modo+")","",data.fontes);
+    // Único formato de resposta: cartão padrão vindo do Gemma 4 (data.card).
+    if(r.ok && data && data.card) renderGuideCard(data.card, data.modo);
+    else if(data && data.detail) bubble("Não foi possível responder agora ("+data.detail+")","");
+    else bubble("Não foi possível responder agora (erro "+r.status+"). Verifique se o Ollama está rodando com o modelo Gemma 4.","");
   }catch(e){
     l.remove();
-    bubble("Erro: backend desligado? Rode scripts/run-dev.ps1 → http://localhost:8000",""); 
+    bubble("Erro: backend desligado? Rode scripts/run-dev.ps1 → http://localhost:8000","");
   }
 }
 if(form){
@@ -159,7 +269,7 @@ if(form){
   });
 }
 const mic=document.getElementById("micBtn");
-if(mic) mic.addEventListener("click",()=>alert("Voz offline em breve: TODO equipe-dia MediaRecorder → /api/stt"));
+if(mic) mic.addEventListener("click",()=>alert("Entrada de voz ainda indisponível neste aparelho."));
 
 // Chips e cards do Stitch viram perguntas reais:
 // Qualquer botão da view-chat com emoji ou texto de tópico dispara ask

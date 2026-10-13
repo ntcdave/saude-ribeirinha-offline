@@ -26,7 +26,7 @@ python -m uvicorn app.main:app --reload --port 8000
 
 ## Arquitetura
 ```
-pergunta → retrieve() [vetor Ollama nomic-embed-text, fallback lexico] → build_prompt() → ollama generate gemma4:e4b (fallback e2b) → resposta + fontes
+pergunta → retrieve() [hibrido: vetor Ollama nomic-embed-text + lexico] → build_prompt() → ollama generate gemma4:e4b → card padrao + fontes
 ```
 - `backend/app/main.py` — API `/api/health`, `/api/ask`, serve frontend.
 - `backend/app/rag/` — `ingest.py`, `retrieve.py`, `prompt.py`, `chunk.py`, `config.py`.

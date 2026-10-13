@@ -54,8 +54,7 @@ def embed_ollama(texts: list[str]) -> list[list[float]] | None:
             print(f"[ingest] embeddings {min(i + BATCH, len(texts))}/{len(texts)}", flush=True)
         return out
     except Exception as e:
-        print(f"[ingest] Ollama indisponível ({e}). Usando fallback sem vetores.", file=sys.stderr)
-        return None
+        raise RuntimeError(f"[ingest] Ollama indisponivel ({e}). Suba o Ollama com '{EMBED_MODEL}' e rode de novo.") from e
 
 
 def main() -> None:

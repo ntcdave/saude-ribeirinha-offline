@@ -1,19 +1,18 @@
-"""API FastAPI: /api/health + /api/ask. Serve o frontend junto p/ demo em 1 clique.
+"""API FastAPI: /api/health + /api/ask. Serve o frontend estático junto (uso em 1 clique).
 
-TODO(equipe-dia):
- - [PESSOA-BACKEND] adicionar POST /api/docs (upload de .txt) se der tempo.
- - [PESSOA-VOZ] adicionar POST /api/stt usando audio do Gemma 4 e4b.
+Respostas SEMPRE via Gemma 4 (CHAT_MODEL) — sem modo demo, sem modelo reserva.
+Se o Ollama estiver fora do ar, /api/ask responde 502 em vez de inventar conteúdo.
 """
 from pathlib import Path
 import requests
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from app.rag.config import OLLAMA_URL, CHAT_MODEL, CHAT_MODEL_FALLBACK, AVISO_SAUDE
+from app.rag.config import OLLAMA_URL, CHAT_MODEL, AVISO_SAUDE
 from app.rag.retrieve import retrieve
-from app.rag.prompt import build_prompt
+from app.rag.prompt import build_prompt, parse_card
 
 app = FastAPI(title="Saude Ribeirinha Offline (Gemma 4 + RAG local)")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -22,31 +21,36 @@ class AskIn(BaseModel):
     pergunta: str
     k: int = 3
 
-def _chat(prompt: str, model: str):
-    try:
-        r = requests.post(f"{OLLAMA_URL}/api/generate", json={"model": model, "prompt": prompt, "stream": False}, timeout=180)
-        if r.status_code == 404:
-            return None
-        r.raise_for_status()
-        return r.json().get("response", "").strip()
-    except Exception:
-        return None
+def _chat(prompt: str) -> str:
+    # Único modelo de resposta: Gemma 4. Qualquer falha vira exceção (sem reserva, sem demo).
+    r = requests.post(f"{OLLAMA_URL}/api/generate", json={"model": CHAT_MODEL, "prompt": prompt, "stream": False}, timeout=180)
+    r.raise_for_status()
+    return (r.json().get("response") or "").strip()
 
 @app.get("/api/health")
+@app.get("/health")
 def health():
-    return {"ok": True, "model": CHAT_MODEL, "fallback": CHAT_MODEL_FALLBACK, "aviso": AVISO_SAUDE}
+    return {"ok": True, "model": CHAT_MODEL, "aviso": AVISO_SAUDE}
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return Response(status_code=204)
 
 @app.post("/api/ask")
 def ask(body: AskIn):
     trechos = retrieve(body.pergunta, k=body.k)
     if not trechos:
-        return {"resposta": "Ainda nao tenho documentos indexados. Rode python scripts/build-index.py. " + AVISO_SAUDE, "fontes": [], "modo": "sem-indice"}
+        raise HTTPException(status_code=404, detail="Ainda nao tenho documentos indexados. Rode python scripts/build-index.py. " + AVISO_SAUDE)
     prompt = build_prompt(body.pergunta, trechos)
-    resp = _chat(prompt, CHAT_MODEL) or _chat(prompt, CHAT_MODEL_FALLBACK)
-    if resp:
-        return {"resposta": resp, "fontes": [{"source": t["source"], "id": t["id"]} for t in trechos], "modo": "gemma4-rag", "trechos": trechos}
-    bullets = "\n".join("- " + t["text"][:300] + " [Fonte: " + t["source"] + "]" for t in trechos)
-    return {"resposta": "(modo demo sem Ollama) Encontrei isto:\n" + bullets + "\n\n" + AVISO_SAUDE, "fontes": [{"source": t["source"], "id": t["id"]} for t in trechos], "modo": "demo-sem-ollama", "trechos": trechos}
+    fontes = [{"source": t["source"], "id": t["id"]} for t in trechos]
+    try:
+        resp = _chat(prompt)
+    except requests.RequestException as e:
+        raise HTTPException(status_code=502, detail=f"Ollama indisponivel ({CHAT_MODEL} em {OLLAMA_URL}). Verifique se o Ollama esta rodando com o modelo {CHAT_MODEL}.") from e
+    if not resp:
+        raise HTTPException(status_code=502, detail="O modelo nao retornou resposta. Tente novamente.")
+    return {"resposta": resp, "fontes": fontes, "modo": "gemma4-rag", "trechos": trechos, "card": parse_card(resp, body.pergunta, fontes)}
 
 # Serve o chat estatico: detecta frontend/ a partir do cwd (sem dunder).
 CWD = Path.cwd()

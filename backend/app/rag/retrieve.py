@@ -11,7 +11,7 @@ import numpy as np
 from .config import INDEX_PATH, OLLAMA_URL, EMBED_MODEL, TOP_K
 
 """Busca local híbrida: vetorial (cosseno/numpy) + léxica (stopwords + radical),
-fundidas por Reciprocal Rank Fusion. Funciona até sem Ollama (só léxica).
+fundidas por Reciprocal Rank Fusion. A resposta final sempre vem do Gemma 4.
 
 TODO(equipe-dia): [PESSOA-RAG] trocar por FAISS/Chroma se quiser. A interface
 `retrieve(pergunta, k)` não muda, então o resto do app continua igual.
@@ -199,13 +199,12 @@ def retrieve(pergunta: str, k: int = TOP_K) -> list[dict]:
             mat = np.array([c["embedding"] for c in chunks], dtype=np.float32)
             scores = mat @ q
             rankings.append(list(np.argsort(-scores)))
-    # 2) léxica com stopwords + radical (sempre roda; sozinha sem Ollama)
+    # 2) léxica com stopwords + radical (sempre roda; compõe o híbrido com a vetorial)
     rankings.append(_lexical_ranking(pergunta, chunks))
     # 3) fusão RRF com peso léxico maior: neste corpus pequeno e com
     # perguntas coloquiais ("queimou na brasa"), o TF-IDF com sinônimos é
     # mais discriminativo que o cosseno (scores vetoriais ficam ~0.65-0.70
-    # p/ tudo). Peso maior no léxico também aproxima o modo online do
-    # offline (só léxico) — importante p/ a demo desligando o Wi-Fi.
+    # p/ tudo).
     fused = np.zeros(len(chunks))
     weights = [0.3] * (len(rankings) - 1) + [1.0] if rankings else []
     for rank, w in zip(rankings, weights):

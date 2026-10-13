@@ -11,7 +11,6 @@ if (-not (Get-Command ollama -ErrorAction SilentlyContinue)) {
 
 Write-Host "Puxando modelos (isso demora so na 1a vez)..." -ForegroundColor Yellow
 ollama pull gemma4:e4b
-ollama pull gemma4:e2b
 ollama pull nomic-embed-text
 
 Write-Host "OK. Teste: ollama run gemma4:e4b 'ola, responda em portugues'" -ForegroundColor Green
