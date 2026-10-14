@@ -1,20 +1,5 @@
-"""Busca local: cosseno com numpy se houver vetores, senão TF simples por palavras.
-
-TODO(equipe-dia): [PESSOA-RAG] trocar por FAISS/Chroma se quiser. A interface
-`retrieve(pergunta, k)` não muda, então o resto do app continua igual.
-"""
-import json
-import re
-import requests
-import numpy as np
-
-from .config import INDEX_PATH, OLLAMA_URL, EMBED_MODEL, TOP_K
-
 """Busca local híbrida: vetorial (cosseno/numpy) + léxica (stopwords + radical),
 fundidas por Reciprocal Rank Fusion. A resposta final sempre vem do Gemma 4.
-
-TODO(equipe-dia): [PESSOA-RAG] trocar por FAISS/Chroma se quiser. A interface
-`retrieve(pergunta, k)` não muda, então o resto do app continua igual.
 """
 import json
 import re
@@ -155,6 +140,8 @@ def _lexical_ranking(pergunta: str, chunks: list[dict]) -> list[int]:
 
 _CACHE: dict = {"n": -1, "toks": [], "prefs": []}
 
+_IDX = {"mtime": None, "chunks": [], "mat": None}
+
 
 def _chunk_cache(chunks: list[dict]):
     """Cache de tokens normalizados + prefixos por chunk (rebuild se mudar)."""
@@ -170,8 +157,26 @@ def _chunk_cache(chunks: list[dict]):
 
 def _load():
     if not INDEX_PATH.exists():
-        return []
-    return json.loads(INDEX_PATH.read_text(encoding="utf-8"))["chunks"]
+        return [], None
+    m = INDEX_PATH.stat().st_mtime
+    if _IDX["mtime"] != m:
+        data = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
+        if isinstance(data, list):
+            chunks = data
+        elif isinstance(data, dict):
+            if "chunks" in data:
+                chunks = data["chunks"]
+            else:
+                # version without chunks key: maybe chunks under other key
+                chunks = data.get("chunks", [])
+        else:
+            chunks = []
+        mat = None
+        if chunks and (chunks[0].get("embedding") if isinstance(chunks[0], dict) else None):
+            mat = np.array([c["embedding"] for c in chunks], dtype=np.float32)
+        _IDX.update(mtime=m, chunks=chunks, mat=mat)
+        _CACHE["n"] = -1
+    return _IDX["chunks"], _IDX["mat"]
 
 
 def _embed_query(q: str):
@@ -188,15 +193,14 @@ def _embed_query(q: str):
 
 
 def retrieve(pergunta: str, k: int = TOP_K) -> list[dict]:
-    chunks = _load()
+    chunks, mat = _load()
     if not chunks:
         return []
     rankings: list[list[int]] = []
     # 1) vetorial (quando há embeddings + Ollama de pé)
-    if chunks[0].get("embedding"):
+    if mat is not None:
         q = _embed_query(pergunta)
         if q is not None:
-            mat = np.array([c["embedding"] for c in chunks], dtype=np.float32)
             scores = mat @ q
             rankings.append(list(np.argsort(-scores)))
     # 2) léxica com stopwords + radical (sempre roda; compõe o híbrido com a vetorial)

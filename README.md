@@ -7,11 +7,11 @@ Feito para o **Hacktoberfest Hack Day Rio Branco (LASI x UFAC) — premio "Best 
 
 ## Por que importa (Acre)
 - Internet ruim ou nula no interior; posto longe; duvida simples vira emergencia.
--uff: resposta com **citacao da fonte** `[Fonte: ...]`, linguagem simples, e aviso fixo: *nao substitui profissional; emergencia SAMU 192*.
+- Resposta com **citacao da fonte** `[Fonte: ...]`, linguagem simples, e aviso fixo: *nao substitui profissional; emergencia SAMU 192*.
 - Se nao esta nos documentos, diz que nao sabe — nao inventa.
 
 ## Como rodar (Windows, 5 min)
-1. `powershell -ExecutionPolicy Bypass -File scripts/setup-ollama.ps1` (instala Ollama + `gemma4:e4b` + `gemma4:e2b` + `nomic-embed-text`)
+1. `powershell -ExecutionPolicy Bypass -File scripts/setup-ollama.ps1` (instala Ollama + `gemma4:e4b` + `nomic-embed-text`)
 2. `powershell -ExecutionPolicy Bypass -File scripts/run-dev.ps1`
 3. Abra `http://localhost:8000` → pergunte. Desligue o Wi-Fi e pergunte de novo (prova do offline).
 

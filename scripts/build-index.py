@@ -1,12 +1,13 @@
 """ Atalho p/ build do indice. Uso: python scripts/build-index.py (da raiz OU de backend/) """
+import argparse
 import sys
 from pathlib import Path
-CWD = Path.cwd()
-if (CWD / "app" / "rag").exists():
-    sys.path.insert(0, str(CWD))  # rodando de dentro de backend/
-elif (CWD / "backend" / "app").exists():
-    sys.path.insert(0, str(CWD / "backend"))  # rodando da raiz
-else:
-    sys.path.insert(0, str(CWD))
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+
 from app.rag.ingest import main
-main()
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--force", action="store_true")
+args = ap.parse_args()
+main(force=args.force)

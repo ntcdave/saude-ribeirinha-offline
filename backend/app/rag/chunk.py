@@ -16,9 +16,9 @@ def chunk_text(text: str, source: str) -> list[dict]:
                 end = cut + 1
         piece = text[start:end].strip()
         if piece:
-            chunks.append({"id": f"{source}#{i}", "source": source, "text": piece})
+            chunks.append({"id": f"{source}#{i}", "source": source, "text": piece, "start": start})
             i += 1
-        start = max(end - CHUNK_OVERLAP, end) if end >= len(text) else end - CHUNK_OVERLAP
+        start = end - CHUNK_OVERLAP
         if start < 0:
             start = 0
         if end >= len(text):
