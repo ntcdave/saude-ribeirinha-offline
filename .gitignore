@@ -4,3 +4,4 @@ backend/data/index.json
 backend/.venv/
 *.pyc
 .ollama/
+tools/frontend-build/node_modules/
